@@ -1,4 +1,4 @@
-# eaton-application-challenge
+# Eaton Application Challange
 
 ## Description
 
