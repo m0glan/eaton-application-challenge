@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * 
  * @author Vlad-Adrian Moglan
  */
-public abstract class TCPServer {
+public abstract class TCPMultiServer extends Server {
 	
 	protected final Logger LOGGER = Logger.getLogger(getClass().getName());
 	
@@ -24,7 +24,6 @@ public abstract class TCPServer {
 	private Thread serverThread;
 	private ThreadPoolExecutor connectionPool;
 	
-	private int port;
 	private int maxNumberOfConnections;	// simultaneous connections
 	
 	/**
@@ -33,19 +32,14 @@ public abstract class TCPServer {
 	 * 
 	 * @param port is the port on which the server listens for new connections
 	 */
-	public TCPServer(int port) {
+	public TCPMultiServer(int port) {
+		super(port);
+		
 		maxNumberOfConnections = ManagementFactory.getThreadMXBean().getThreadCount() + 1;
 		
 		connectionPool = new ThreadPoolExecutor(maxNumberOfConnections, maxNumberOfConnections, 0L,
 				TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
-		
-		this.port = port;
 	}
-	
-	/**
-	 * @return the port attributed for running the server
-	 */
-	public final int getPort() { return this.port; }
 	
 	/**
 	 * @return the maximum number of simultaneous connections
@@ -64,9 +58,6 @@ public abstract class TCPServer {
 		return serverThread != null && serverThread.isAlive() && serverTask != null && serverTask.isRunning();
 	}
 	
-	/**
-	 * Starts the server
-	 */
 	public final void start()  {
 		if (!isRunning()) {
 			serverTask = new ServerTask(connectionPool);
@@ -76,51 +67,18 @@ public abstract class TCPServer {
 		}
 	}
 	
-	/**
-	 * Stops the server
-	 * 
-	 * @throws InterruptedException if joining the thread goes wrong
-	 */
-	public final void stop() throws InterruptedException {
+	public final void stop() {
 		if (isRunning()) {
 			connectionPool.shutdown();
 			serverTask.stop();
-			serverThread.join();
+			
+			try {
+				serverThread.join();
+			} catch (InterruptedException e) {
+				LOGGER.severe(e.getMessage());
+			}
 		}
 	}
-	
-	/**
-	 * Method called when a client is connected.
-	 * 
-	 * @param socket is used for communication with the client
-	 */
-	protected abstract void onClientConnect(Socket socket);
-	
-	/**
-	 * Method called when a client is disconnected.
-	 * 
-	 * @param socket is used for communication with the client
-	 */
-	protected abstract void onClientDisconnect(Socket socket);
-	
-	/**
-	 * Provides a mechanism to perform operations when the server starts.
-	 */
-	protected abstract void onServerStart();
-	
-	/**
-	 * Provides a mechanism to perform operations when the server shuts down.
-	 */
-	protected abstract void onServerShutdown();
-	
-	/**
-	 * Method whose implementation defines how a request should be handled.
-	 * 
-	 * @param request is the object received from the client
-	 * @param port is the port from which the request comes
-	 * @return a response for the client
-	 */
-	protected abstract Message<?> handleRequest(Message<?> request, int port);
 	
 	/**
 	 * A runnable allowing to manage a connection with a client.
@@ -214,7 +172,7 @@ public abstract class TCPServer {
 		 */
 		public void run() {
 			try {
-				listener = new ServerSocket(port);
+				listener = new ServerSocket(getPort());
 				
 				onServerStart();
 				

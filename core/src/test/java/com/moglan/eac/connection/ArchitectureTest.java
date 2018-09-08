@@ -83,12 +83,7 @@ public class ArchitectureTest {
 			e.printStackTrace();
 		} finally {
 			executionPool.shutdown();
-			
-			try {
-				server.stop();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			server.stop();
 		}
 	}
 	
@@ -97,7 +92,7 @@ public class ArchitectureTest {
 	 */
 	@Test
 	void serverShutdownTest() {
-		TCPServer server = null;
+		TCPMultiServer server = null;
 		
 		try {
 			server = new DummyServer(Config.PORT);
@@ -106,22 +101,14 @@ public class ArchitectureTest {
 			
 			assertTrue(server.isRunning());
 			
-			try {
-				server.stop();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			server.stop();
 			
 			assertFalse(server.isRunning());
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		} finally {
 			if (server != null && server.isRunning()) {
-				try {
-					server.stop();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				server.stop();
 			}
 		}
 	}
@@ -129,7 +116,7 @@ public class ArchitectureTest {
 	/**
 	 * Dummy server counting the total number of received messages.
 	 */
-	class DummyServer extends TCPServer {
+	class DummyServer extends TCPMultiServer {
 		
 		private long numRecvMessages;	// total number of received messages
 

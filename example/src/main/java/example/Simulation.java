@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 import com.moglan.eac.connection.Config;
 import com.moglan.eac.connection.TCPClient;
-import com.moglan.eac.connection.TCPServer;
+import com.moglan.eac.connection.TCPMultiServer;
 
 public class Simulation {
 
@@ -18,7 +18,7 @@ public class Simulation {
 	private static final Logger LOGGER = Logger.getLogger("Simulation");
 	
 	public static void main(String[] args) {
-		TCPServer server = new CentralMonitor(Config.PORT);
+		TCPMultiServer server = new CentralMonitor(Config.PORT);
 		ExecutorService clientExecutionPool 
 			= Executors.newFixedThreadPool(server.getMaxNumberOfConnections());	// manages the running client instances
 		List<Future<?>> futures = new ArrayList<>();	// used for preventing premature server stop

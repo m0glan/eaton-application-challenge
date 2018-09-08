@@ -13,24 +13,12 @@ import java.util.logging.Logger;
  * 
  * @author Vlad-Adrian Moglan
  */
-public abstract class TCPClient implements Runnable {
+public abstract class TCPClient extends Client implements Runnable {
 
 	protected final Logger LOGGER = Logger.getLogger(getClass().getName());
 	
-	private String addr;
-	private int port;
-	
-	/**
-	 * The constructor opens a socket with a given address and a given port.
-	 * 
-	 * @param addr is the address of the remote server
-	 * @param port is the port through which to access the server
-	 * @throws UnknownHostException if the host cannot be found
-	 * @throws IOException if the socket fails to open
-	 */
 	public TCPClient(String addr, int port) throws UnknownHostException, IOException {
-		this.addr = addr;
-		this.port = port;
+		super(addr, port);
 	}
 	
 	/**
@@ -42,7 +30,7 @@ public abstract class TCPClient implements Runnable {
 		Socket socket;
 		
 		try {
-			socket = new Socket(addr, port);
+			socket = new Socket(getAddr(), getPort());
 			
 			onConnect(socket);
 			
@@ -91,32 +79,5 @@ public abstract class TCPClient implements Runnable {
 		
 		return true;
 	}
-	
-	/**
-	 * Method called when the connection is established.
-	 * 
-	 * @param socket is used for communicating with the server.
-	 */
-	protected abstract void onConnect(Socket socket);
-	
-	/**
-	 * Method called when the connection is ended. 
-	 */
-	protected abstract void onDisconnect();
-	
-	/**
-	 * Creates a request directed at the server and allows the implementation of a connection interruption 
-	 * mechanism.
-	 * 
-	 * @return a server request
-	 */
-	protected abstract Message<?> createRequest();
-	
-	/**
-	 * Handles the response received from the server after a request.
-	 * 
-	 * @param response is the message received from the server
-	 */
-	protected abstract void handleResponse(Message<?> response);
 	
 }

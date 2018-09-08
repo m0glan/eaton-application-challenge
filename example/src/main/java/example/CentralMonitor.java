@@ -10,9 +10,9 @@ import java.util.UUID;
 
 import com.moglan.eac.connection.Message;
 import com.moglan.eac.connection.Protocol;
-import com.moglan.eac.connection.TCPServer;
+import com.moglan.eac.connection.TCPMultiServer;
 
-public class CentralMonitor extends TCPServer {
+public class CentralMonitor extends TCPMultiServer {
 	
 	private int numRecvMessages;	// the total number of received messages throughout the server's lifespan
 	private Map<Integer, Long> portAllocation; 	// stores what client is connected on what port
@@ -25,7 +25,7 @@ public class CentralMonitor extends TCPServer {
 	}
 
 	@Override
-	protected synchronized void onClientConnect(Socket socket) {
+	protected void onClientConnect(Socket socket) {
 		/**
 		 * When the client connects, it does not have an ID so it requests
 		 * the server to provide it with one. This method handles that first,
