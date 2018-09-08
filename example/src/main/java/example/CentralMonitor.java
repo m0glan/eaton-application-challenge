@@ -25,7 +25,7 @@ public class CentralMonitor extends TCPServer {
 	}
 
 	@Override
-	protected void onClientConnect(Socket socket) {
+	protected synchronized void onClientConnect(Socket socket) {
 		/**
 		 * When the client connects, it does not have an ID so it requests
 		 * the server to provide it with one. This method handles that first,

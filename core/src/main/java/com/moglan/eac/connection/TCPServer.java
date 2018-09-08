@@ -55,7 +55,7 @@ public abstract class TCPServer {
 	/**
 	 * @return the number of active connections
 	 */
-	public final long getNumberOfConnections() { return connectionPool.getPoolSize(); }
+	public final long getNumberOfConnections() { return connectionPool.getActiveCount(); }
 	
 	/**
 	 * @return true if the server is running
@@ -134,6 +134,8 @@ public abstract class TCPServer {
 		}
 
 		public void run() {
+			onClientConnect(socket);
+			
 			try {
 				socket.setSoTimeout(Config.SO_TIMEOUT);
 				
@@ -246,7 +248,6 @@ public abstract class TCPServer {
 			
 			try {
 				socket = listener.accept();
-				onClientConnect(socket);
 				connectionPool.submit(new ClientTask(socket));
 			} catch (IOException e) {
 				LOGGER.info("Connection was closed.");

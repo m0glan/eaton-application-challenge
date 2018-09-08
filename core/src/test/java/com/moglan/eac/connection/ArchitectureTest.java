@@ -82,6 +82,8 @@ public class ArchitectureTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			executionPool.shutdown();
+			
 			try {
 				server.stop();
 			} catch (InterruptedException e) {
