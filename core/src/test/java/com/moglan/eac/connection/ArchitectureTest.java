@@ -1,8 +1,11 @@
 package com.moglan.eac.connection;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +21,6 @@ public class ArchitectureTest {
 	
 	private static final int MAX_SENT_PER_DEVICE = 3;
 	private static final int MAX_CLIENTS = 3;
-	
-	List<Future<?>> futures = new ArrayList<>();
-	ExecutorService clientExecutionPool = Executors.newFixedThreadPool(3);
 
 	/**
 	 * Verifies whether a sub-class of TCPServer can successfully implement a global 
@@ -29,12 +29,16 @@ public class ArchitectureTest {
 	 */
 	@Test
 	void globalCountTest() {
+		List<Future<?>> futures = new ArrayList<>();
+		ExecutorService executionPool = Executors.newFixedThreadPool(MAX_CLIENTS);
+		DummyServer server = null;
+		
 		try {
 			/*
 			 * Starting dummy server 
 			 */
 			
-			CounterServer server = new CounterServer(Config.PORT);
+			server = new DummyServer(Config.PORT);
 			
 			server.start();
 			
@@ -43,8 +47,8 @@ public class ArchitectureTest {
 			 */
 			
 			for (int i = 0; i < MAX_CLIENTS; i++) {
-				Runnable runnable = new MeasuringDevice(LOCALHOST, Config.PORT);
-				Future<?> future = clientExecutionPool.submit(runnable);
+				Runnable runnable = new DummyClient(i, LOCALHOST, Config.PORT);
+				Future<?> future = executionPool.submit(runnable);
 				
 				futures.add(future);
 			}
@@ -73,41 +77,96 @@ public class ArchitectureTest {
 			}
 			
 			if (allDone) {
-				assertEquals(server.getNumRecvMessages(), MAX_SENT_PER_DEVICE * MAX_CLIENTS);
+				assertEquals(MAX_SENT_PER_DEVICE * MAX_CLIENTS, server.getNumRecvMessages());
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				server.stop();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Tests the server shutdown mechanism
+	 */
+	@Test
+	void serverShutdownTest() {
+		TCPServer server = null;
+		
+		try {
+			server = new DummyServer(Config.PORT);
+			
+			server.start();
+			
+			assertTrue(server.isRunning());
+			
+			try {
+				server.stop();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			assertFalse(server.isRunning());
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} finally {
+			if (server != null && server.isRunning()) {
+				try {
+					server.stop();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
 	/**
 	 * Dummy server counting the total number of received messages.
 	 */
-	class CounterServer extends TCPServer {
+	class DummyServer extends TCPServer {
 		
 		private long numRecvMessages;	// total number of received messages
 
-		public CounterServer(int port) throws IOException {
+		public DummyServer(int port) throws IOException {
 			super(port);
 			
 			numRecvMessages = 0;
 		}
 
 		public long getNumRecvMessages() { return this.numRecvMessages; }
-		
+
+		@Override
+		protected void onConnection(Socket socket) {
+			return;
+		}
+
+		@Override
+		protected void onDisconnection() {
+			return;
+		}
+
 		/**
 		 * Method that is synchronized to prevent simultaneous accent to the 
 		 * {@code numRecvMessages} variable.
 		 */
 		@Override
-		protected synchronized Object handleRequest(Object request) {
-			if (request != null) {
+		protected synchronized Message<?> handleRequest(Message<?> request) {
+			if ((request != null) && (request.getProtocol() != Protocol.END_CONNECTION)) {
 				numRecvMessages++;
 				
-				return new String();
-			} else {
-				return null;
+				return new Message<>(0, Protocol.DATA_TRANSFER, new String());
 			}
+			
+			return null;
+		}
+
+		@Override
+		protected void onServerShutdown() {
+			return;
 		}
 
 	}
@@ -115,35 +174,56 @@ public class ArchitectureTest {
 	/**
 	 * Dummy client class, sending a limited number of messages to the server.
 	 */
-	class MeasuringDevice extends TCPClient {
+	class DummyClient extends TCPClient {
 		
+		int id;
 		private int numSentMessages;
 		
-		public MeasuringDevice(String addr, int port) throws UnknownHostException, IOException {
+		public DummyClient(int id, String addr, int port) throws UnknownHostException, IOException {
 			super(addr, port);
 			
+			this.id = id;
 			numSentMessages = 0;
 		}
 
 		@Override
-		protected Object createRequest() {
+		protected Message<?> createRequest() {
 			if (numSentMessages < MAX_SENT_PER_DEVICE) {
+				/**
+				 * Sending {@code String} objects to the server until maximum number is attained.
+				 */
+				
 				numSentMessages++;
 				
-				return new String();
+				return new Message<>(id, Protocol.DATA_TRANSFER, new String());
 			}
 			
-			else
-				return null;
+			else {
+				/*
+				 * Sending end-connection signal 
+				 */
+				
+				return new Message<>(id, Protocol.END_CONNECTION);
+			}
 		}
 
 		@Override
-		protected void handleReply(Object reply) {
+		protected void handleReply(Message<?> reply) {
 			try {
 				Thread.sleep(1000);	// introducing a delay of 1 second between exchanges
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				LOGGER.severe(e.getMessage());
 			}
+		}
+
+		@Override
+		protected void onConnection(Socket socket) {
+			return;
+		}
+
+		@Override
+		protected void onDisconnection() {
+			return;
 		}
 		
 	}

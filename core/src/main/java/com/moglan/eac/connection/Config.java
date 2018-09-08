@@ -9,7 +9,7 @@ package com.moglan.eac.connection;
 public class Config {
 	
 	public static final int PORT = 9090;
-	public static final int SO_TIMEOUT = 5000;
+	public static final int SO_TIMEOUT = 50000;
 	
 	private Config() { }
 	
