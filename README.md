@@ -26,4 +26,4 @@ Once inside the project directory, the command `mvn clean install` installs the 
 
 ### Running the example
 
-To run the `Example.java` main class, while in the project's root directory do: `cd example && mvn exec:java -Dexec.mainClass="example.Example"` and that should do it.
+To run the `Example.java` main class, while in the project's root directory do: `cd example && mvn exec:java -Dexec.mainClass="example.Example"` and that should do it (tested on Windows 10 and Ubuntu 18.04).
