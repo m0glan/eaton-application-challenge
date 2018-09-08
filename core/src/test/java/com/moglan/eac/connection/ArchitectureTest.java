@@ -140,12 +140,12 @@ public class ArchitectureTest {
 		public long getNumRecvMessages() { return this.numRecvMessages; }
 
 		@Override
-		protected void onConnection(Socket socket) {
+		protected void onClientConnect(Socket socket) {
 			return;
 		}
 
 		@Override
-		protected void onDisconnection() {
+		protected void onClientDisconnect(Socket socket) {
 			return;
 		}
 
@@ -154,7 +154,7 @@ public class ArchitectureTest {
 		 * {@code numRecvMessages} variable.
 		 */
 		@Override
-		protected synchronized Message<?> handleRequest(Message<?> request) {
+		protected synchronized Message<?> handleRequest(Message<?> request, int port) {
 			if ((request != null) && (request.getProtocol() != Protocol.END_CONNECTION)) {
 				numRecvMessages++;
 				
@@ -167,6 +167,11 @@ public class ArchitectureTest {
 		@Override
 		protected void onServerShutdown() {
 			return;
+		}
+
+		@Override
+		protected void onServerStart() {
+			LOGGER.info("Server running on port " + getPort() + ".");
 		}
 
 	}
@@ -208,7 +213,7 @@ public class ArchitectureTest {
 		}
 
 		@Override
-		protected void handleReply(Message<?> reply) {
+		protected void handleResponse(Message<?> reply) {
 			try {
 				Thread.sleep(1000);	// introducing a delay of 1 second between exchanges
 			} catch (InterruptedException e) {
@@ -217,12 +222,12 @@ public class ArchitectureTest {
 		}
 
 		@Override
-		protected void onConnection(Socket socket) {
+		protected void onConnect(Socket socket) {
 			return;
 		}
 
 		@Override
-		protected void onDisconnection() {
+		protected void onDisconnect() {
 			return;
 		}
 		

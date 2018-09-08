@@ -17,8 +17,8 @@ public abstract class TCPClient implements Runnable {
 
 	protected final Logger LOGGER = Logger.getLogger(getClass().getName());
 	
-	String addr;
-	int port;
+	private String addr;
+	private int port;
 	
 	/**
 	 * The constructor opens a socket with a given address and a given port.
@@ -44,7 +44,7 @@ public abstract class TCPClient implements Runnable {
 		try {
 			socket = new Socket(addr, port);
 			
-			onConnection(socket);
+			onConnect(socket);
 			
 			try {
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -58,7 +58,7 @@ public abstract class TCPClient implements Runnable {
 			} catch (IOException e) {
 				LOGGER.severe(e.getMessage());
 			} finally {
-				onDisconnection();
+				onDisconnect();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,25 +75,17 @@ public abstract class TCPClient implements Runnable {
 	 */
 	private final boolean keepAlive(ObjectInputStream ois, ObjectOutputStream oos, Message<?> request) 
 			throws IOException, ClassNotFoundException {
-		Object reply = null;
+		Object response = null;
 		
 		if (request.getProtocol() != Protocol.END_CONNECTION) {
-			reply = ois.readObject();
+			response = ois.readObject();
 			
-			if (reply instanceof Message) {
-				handleReply((Message<?>) reply);
+			if (response instanceof Message) {
+				handleResponse((Message<?>) response);
 			} else {
-				/*
-				 * Invalid reply type
-				 */
-				
 				return false;
 			}
 		} else {
-			/*
-			 * If a connection halt has been requested, no need to continue. 
-			 */
-			
 			return false;
 		}
 		
@@ -105,12 +97,12 @@ public abstract class TCPClient implements Runnable {
 	 * 
 	 * @param socket is used for communicating with the server.
 	 */
-	protected abstract void onConnection(Socket socket);
+	protected abstract void onConnect(Socket socket);
 	
 	/**
 	 * Method called when the connection is ended. 
 	 */
-	protected abstract void onDisconnection();
+	protected abstract void onDisconnect();
 	
 	/**
 	 * Creates a request directed at the server and allows the implementation of a connection interruption 
@@ -121,10 +113,10 @@ public abstract class TCPClient implements Runnable {
 	protected abstract Message<?> createRequest();
 	
 	/**
-	 * Handles the reply received from the server after a request.
+	 * Handles the response received from the server after a request.
 	 * 
-	 * @param reply is the message received from the server
+	 * @param response is the message received from the server
 	 */
-	protected abstract void handleReply(Message<?> reply);
+	protected abstract void handleResponse(Message<?> response);
 	
 }

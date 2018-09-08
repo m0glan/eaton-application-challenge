@@ -16,7 +16,7 @@ public class Message<T extends Serializable> implements Serializable {
 	 */
 	private static final long serialVersionUID = -499005692995480489L;
 	
-	private int senderID;
+	private long senderID;
 	private Protocol protocol;
 	private T data;
 	
@@ -26,7 +26,7 @@ public class Message<T extends Serializable> implements Serializable {
 	 * @param senderID is the identification number of the sender
 	 * @param protocol defines the procedure to be followed by the client or the server
 	 */
-	public Message(int senderID, Protocol protocol) {
+	public Message(long senderID, Protocol protocol) {
 		this.senderID = senderID;
 		this.protocol = protocol;
 		this.data = null;
@@ -39,13 +39,13 @@ public class Message<T extends Serializable> implements Serializable {
 	 * @param protocol defines the procedure to be followed by the client or the server
 	 * @param data is the serializable object or the structure to be exchanged between two nodes
 	 */
-	public Message(int senderID, Protocol protocol, T data) {
+	public Message(long senderID, Protocol protocol, T data) {
 		this.senderID = senderID;
 		this.protocol = protocol;
 		this.data = data;
 	}
 	
-	public int getSenderID() { return senderID; }
+	public long getSenderID() { return senderID; }
 	
 	public Protocol getProtocol() { return protocol; }
 	

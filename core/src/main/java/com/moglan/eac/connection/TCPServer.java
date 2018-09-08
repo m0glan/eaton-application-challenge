@@ -43,6 +43,11 @@ public abstract class TCPServer {
 	}
 	
 	/**
+	 * @return the port attributed for running the server
+	 */
+	public final int getPort() { return this.port; }
+	
+	/**
 	 * @return the maximum number of simultaneous connections
 	 */
 	public final int getMaxNumberOfConnections() { return maxNumberOfConnections; }
@@ -78,6 +83,7 @@ public abstract class TCPServer {
 	 */
 	public final void stop() throws InterruptedException {
 		if (isRunning()) {
+			connectionPool.shutdown();
 			serverTask.stop();
 			serverThread.join();
 		}
@@ -86,14 +92,21 @@ public abstract class TCPServer {
 	/**
 	 * Method called when a client is connected.
 	 * 
-	 * @param socket is used for communication with the client.
+	 * @param socket is used for communication with the client
 	 */
-	protected abstract void onConnection(Socket socket);
+	protected abstract void onClientConnect(Socket socket);
 	
 	/**
 	 * Method called when a client is disconnected.
+	 * 
+	 * @param socket is used for communication with the client
 	 */
-	protected abstract void onDisconnection();
+	protected abstract void onClientDisconnect(Socket socket);
+	
+	/**
+	 * Provides a mechanism to perform operations when the server starts.
+	 */
+	protected abstract void onServerStart();
 	
 	/**
 	 * Provides a mechanism to perform operations when the server shuts down.
@@ -104,9 +117,10 @@ public abstract class TCPServer {
 	 * Method whose implementation defines how a request should be handled.
 	 * 
 	 * @param request is the object received from the client
-	 * @return a reply for the client
+	 * @param port is the port from which the request comes
+	 * @return a response for the client
 	 */
-	protected abstract Message<?> handleRequest(Message<?> request);
+	protected abstract Message<?> handleRequest(Message<?> request, int port);
 	
 	/**
 	 * A runnable allowing to manage a connection with a client.
@@ -133,7 +147,7 @@ public abstract class TCPServer {
 			} catch (Exception e) {
 				LOGGER.severe(e.getMessage());
 			} finally {
-				onDisconnection();
+				onClientDisconnect(socket);
 				
 				try {
 					socket.close();
@@ -150,15 +164,15 @@ public abstract class TCPServer {
 		 */
 		private boolean keepAlive(Object request, ObjectOutputStream out) {
 			if (request instanceof Message) {
-				Message<?> reply; 
+				Message<?> response; 
 				
 				if (((Message<?>) request).getProtocol() == Protocol.END_CONNECTION) {
 					return false;
 				} else {
-					reply = handleRequest((Message<?>) request);
+					response = handleRequest((Message<?>) request, socket.getPort());
 					
 					try {
-						out.writeObject(reply);
+						out.writeObject(response);
 					} catch (IOException e) {
 						LOGGER.severe(e.getMessage());
 					}
@@ -200,7 +214,7 @@ public abstract class TCPServer {
 			try {
 				listener = new ServerSocket(port);
 				
-				LOGGER.info("Server running on port " + port + ".");
+				onServerStart();
 				
 				while (running) {
 					accept();
@@ -232,11 +246,10 @@ public abstract class TCPServer {
 			
 			try {
 				socket = listener.accept();
-				
-				onConnection(socket);
+				onClientConnect(socket);
 				connectionPool.submit(new ClientTask(socket));
 			} catch (IOException e) {
-				LOGGER.info("Connection was interrupted.");
+				LOGGER.info("Connection was closed.");
 			}
 		}
 		
