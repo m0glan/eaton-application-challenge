@@ -21,6 +21,7 @@ public class MeasuringDevice extends TCPClient {
 		
 		id = -1;
 		numMessagesSent = 0;
+		
 		this.maxNumMessagesToSend = maxNumMessagesToSend;
 	}
 

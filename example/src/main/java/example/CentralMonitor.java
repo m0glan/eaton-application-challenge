@@ -7,22 +7,47 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
+import com.moglan.eac.connection.Config;
 import com.moglan.eac.connection.Message;
 import com.moglan.eac.connection.Protocol;
 import com.moglan.eac.connection.TCPMultiServer;
 
+/**
+ * Singleton that monitors multiple measuring devices and counts the total
+ * number of messages received.
+ * 
+ * @author Vlad-Adrian Moglan
+ */
 public class CentralMonitor extends TCPMultiServer {
+	
+	private static CentralMonitor instance = null;
 	
 	private int numRecvMessages;	// the total number of received messages throughout the server's lifespan
 	private Map<Integer, Long> portAllocation; 	// stores what client is connected on what port
 
-	public CentralMonitor(int port) {
-		super(port);
+	private CentralMonitor() {
+		super(Config.PORT);
 		
 		numRecvMessages = 0;
 		portAllocation = new HashMap<Integer, Long>();
 	}
+	
+	/**
+	 * @return the unique instance of the class
+	 */
+	public static CentralMonitor get() {
+		if (instance == null) {
+			instance = new CentralMonitor();
+		}
+		
+		return instance;
+	}
+	
+	public Logger getLogger() { return LOGGER; }
+	
+	public int getNumRecvMessages() { return numRecvMessages; }
 
 	@Override
 	protected void onClientConnect(Socket socket) {
