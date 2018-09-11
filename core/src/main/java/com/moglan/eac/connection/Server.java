@@ -27,8 +27,6 @@ public abstract class Server {
 	
 	/**
 	 * Stops the server
-	 * 
-	 * @throws InterruptedException if joining the thread goes wrong
 	 */
 	public abstract void stop();
 
