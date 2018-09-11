@@ -1,3 +1,7 @@
+![GitHub release](https://img.shields.io/badge/release-1.0.0-green.svg) ![Licence](https://img.shields.io/packagist/l/doctrine/orm.svg) 
+
+
+
 # Eaton Application Challange
 
 ## Brief
