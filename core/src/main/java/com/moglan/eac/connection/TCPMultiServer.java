@@ -151,7 +151,8 @@ public abstract class TCPMultiServer extends Server {
 	}
 	
 	/**
-	 * Runs main server operations
+	 * Runs main server operations in a separate thread so that it can be stopped
+	 * within the main program.
 	 */
 	private final class ServerTask implements Runnable {
 		
