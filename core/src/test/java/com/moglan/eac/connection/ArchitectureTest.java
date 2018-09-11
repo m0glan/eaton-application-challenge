@@ -19,8 +19,8 @@ public class ArchitectureTest {
 	
 	private static final String LOCALHOST = "127.0.0.1";
 	
-	private static final int MAX_SENT_PER_DEVICE = 3;
-	private static final int MAX_CLIENTS = 3;
+	private static final int MAX_SENT_PER_DEVICE = 2;
+	private static final int MAX_CLIENTS = 2;
 
 	/**
 	 * Verifies whether a sub-class of TCPServer can successfully implement a global 

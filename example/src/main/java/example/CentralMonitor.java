@@ -81,6 +81,8 @@ public class CentralMonitor extends TCPMultiServer {
 				
 				oos.writeObject(reply);
 				portAllocation.put(socket.getPort(), id);
+				
+				LOGGER.info("Attributed id " + id + " to the client on port " + socket.getPort() + ".");
 			}
 		} catch (Exception e) {
 			try {
