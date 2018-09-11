@@ -14,6 +14,10 @@ This project uses standard Java socket programming, meaning a _client_ connectin
 
 In addition to the previous features, a server model that supports multiple simultaneous connections has been implemented using Java multithreading through thread execution pools and synchronous methods in such a way that there can be no unwanted concurrent access to any critical section.
 
-## Download
+## Download and usage
 
-Get version 1.0.0 [<img src="https://png.icons8.com/material-outlined/12/000000/downloading-updates.png">](https://www.dropbox.com/sh/s8pwrjyb499h04v/AAAZwGOXr0h93-yHZZ4-I8mva?dl=0). Check the [wiki](https://github.com/vmoglan/eaton-application-challenge/wiki/Building-the-project-from-source) for information on how to build the project from source.
+Get version 1.0.0 [<img src="https://png.icons8.com/material-outlined/12/000000/downloading-updates.png">](https://www.dropbox.com/sh/s8pwrjyb499h04v/AAAZwGOXr0h93-yHZZ4-I8mva?dl=0) and run it with `java -jar example-1.0.0.jar`. For a clearer output, it is possible to mute the server logging by adding the `--quiet-exchange` argument (_i.e._ `java -jar example-1.0.0.jar --quiet-exchange`).
+
+## Building the project from source
+
+Check the [wiki](https://github.com/vmoglan/eaton-application-challenge/wiki/Building-the-project-from-source) for information on how to build the project from source.
