@@ -10,6 +10,6 @@ This project uses standard Java socket programming, meaning a _client_ connectin
 
 In addition to the previous features, a server model that supports multiple simultaneous connections has been implemented using Java multithreading through thread execution pools and synchronous methods in such a way that there can be no unwanted concurrent access to any critical section.
 
-## Status
+## Download
 
-The main goal has been accomplished, _i.e._ a server that counts the number of messages it receives from clients that concurrently transfer data to it. Get version 1.0.0 [here](https://www.dropbox.com/sh/s8pwrjyb499h04v/AAAZwGOXr0h93-yHZZ4-I8mva?dl=0).
+Get version 1.0.0 [<img src="https://png.icons8.com/material-outlined/12/000000/downloading-updates.png">](https://www.dropbox.com/sh/s8pwrjyb499h04v/AAAZwGOXr0h93-yHZZ4-I8mva?dl=0)
