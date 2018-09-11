@@ -52,7 +52,7 @@ public class Simulation {
 				future.get();	// blocking
 			}
 			
-			LOGGER.fine("Total number of messages received by the server: " + centralMonitor.getNumRecvMessages() + ".");
+			LOGGER.info("Total number of messages received by the server: " + centralMonitor.getNumRecvMessages() + ".");
 			
 			clientExecutionPool.shutdown();
 			centralMonitor.stop();

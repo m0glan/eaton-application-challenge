@@ -109,7 +109,7 @@ public class CentralMonitor extends TCPMultiServer {
 
 	@Override
 	protected void onServerShutdown() {
-		LOGGER.info("Server is shutting down. This server has received a total of " + numRecvMessages + " messages.");
+		LOGGER.info("Server is shutting down...");
 	}
 
 	@Override
