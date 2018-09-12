@@ -2,7 +2,7 @@
 
 
 
-# Eaton Application Challange
+# Eaton Application Challenge
 
 ## Brief
 
