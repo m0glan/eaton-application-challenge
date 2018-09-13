@@ -1,4 +1,4 @@
-<img src="https://camo.githubusercontent.com/a3f0e755c58f86a7ab0f27f78fa8bfee6ea006c8/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f72656c656173652d312e302e302d677265656e2e737667">
+<img src="https://img.shields.io/badge/release-2.0.0-brightgreen.svg">
 
 # Eaton Application Challange
 
