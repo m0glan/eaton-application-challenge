@@ -17,6 +17,8 @@ public abstract class TCPClient extends Client implements Runnable {
 
 	protected final Logger LOGGER = Logger.getLogger(getClass().getName());
 	
+	private volatile boolean isRunning = true;
+	
 	public TCPClient(String addr, int port) throws UnknownHostException, IOException {
 		super(addr, port);
 	}
@@ -42,7 +44,7 @@ public abstract class TCPClient extends Client implements Runnable {
 				do {
 					request = createRequest();
 					oos.writeUnshared(request);
-				} while (keepAlive(ois, oos, request));
+				} while (keepAlive(ois, oos, request) && isRunning);
 			} catch (IOException e) {
 				LOGGER.severe(e.getMessage());
 			} finally {
@@ -51,6 +53,10 @@ public abstract class TCPClient extends Client implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void stop() {
+		this.isRunning = false;
 	}
 	
 	/**

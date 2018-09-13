@@ -13,17 +13,16 @@ import com.moglan.eac.connection.TCPClient;
 public class MeasuringDevice extends TCPClient {
 	
 	private long id;
-	private int numMessagesSent;
-	private int maxNumMessagesToSend;	// the maximum number of message that the client should send
+        private boolean isRequestedToStop;
 
-	public MeasuringDevice(String addr, int port, int maxNumMessagesToSend) throws UnknownHostException, IOException {
+	public MeasuringDevice(String addr, int port) throws UnknownHostException, IOException {
 		super(addr, port);
 		
 		id = -1;
-		numMessagesSent = 0;
-		
-		this.maxNumMessagesToSend = maxNumMessagesToSend;
+                isRequestedToStop = false;
 	}
+        
+        public void stop() { isRequestedToStop = true; }
 
 	@Override
 	protected void onConnect(Socket socket) {
@@ -75,10 +74,8 @@ public class MeasuringDevice extends TCPClient {
 		 * client sends an end connection request using the handshake method.
 		 */
 		
-		if (numMessagesSent < maxNumMessagesToSend) {
-			numMessagesSent++;
-			
-			return new Message<String>(this.id, Protocol.DATA_TRANSFER, new String("Message no. " + numMessagesSent + "."));
+		if (!isRequestedToStop) {
+			return new Message<String>(this.id, Protocol.DATA_TRANSFER, "Hello.");
 		}
 		
 		return new Message<>(this.id, Protocol.END_CONNECTION);
@@ -92,5 +89,10 @@ public class MeasuringDevice extends TCPClient {
 			LOGGER.severe(e.getMessage());
 		}
 	}
+        
+        @Override
+        public String toString() {
+            return Long.toString(id);
+        }
 
 }

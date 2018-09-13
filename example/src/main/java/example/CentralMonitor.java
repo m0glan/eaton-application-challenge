@@ -13,6 +13,7 @@ import com.moglan.eac.connection.Config;
 import com.moglan.eac.connection.Message;
 import com.moglan.eac.connection.Protocol;
 import com.moglan.eac.connection.TCPMultiServer;
+import java.util.logging.Level;
 
 /**
  * Singleton that monitors multiple measuring devices and counts the total
@@ -23,15 +24,18 @@ import com.moglan.eac.connection.TCPMultiServer;
 public class CentralMonitor extends TCPMultiServer {
 	
 	private static CentralMonitor instance = null;
-	
+        
+	private final Map<Integer, Long> portAllocation; 	// stores what client is connected on what port
+        
 	private int numRecvMessages;	// the total number of received messages throughout the server's lifespan
-	private Map<Integer, Long> portAllocation; 	// stores what client is connected on what port
 
 	private CentralMonitor() {
 		super(Config.PORT);
 		
 		numRecvMessages = 0;
-		portAllocation = new HashMap<Integer, Long>();
+		portAllocation = new HashMap<>();
+                
+                LOGGER.setLevel(Level.ALL);
 	}
 	
 	/**
@@ -57,7 +61,7 @@ public class CentralMonitor extends TCPMultiServer {
 		 * special request.
 		 */
 		
-		LOGGER.info("New connection on port " + socket.getPort() + ".");
+		LOGGER.log(Level.INFO, "New connection on port {0}.", socket.getPort());
 		
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -123,10 +127,12 @@ public class CentralMonitor extends TCPMultiServer {
 		 */
 		
 		numRecvMessages++;
+		MessageCount.get().increment();
 		
-		LOGGER.info("Received \"" + request.getData() + "\" from client " + request.getSenderID() + " on port " + port + ".");
+		LOGGER.info("Received \"" + request.getData() + "\" from client " 
+                        + request.getSenderID() + " on port " + port + ".");
 		
-		return new Message<String>(0, Protocol.DATA_TRANSFER, new String("Well received."));
+		return new Message<>(0, Protocol.DATA_TRANSFER, "Well received.");
 	}
 
 }
