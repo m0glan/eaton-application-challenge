@@ -69,7 +69,6 @@ public abstract class TCPMultiServer extends Server {
 	
 	public final void stop() {
 		if (isRunning()) {
-			connectionPool.shutdown();
 			serverTask.stop();
 			
 			try {

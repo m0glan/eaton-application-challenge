@@ -13,16 +13,25 @@ import com.moglan.eac.connection.TCPClient;
 public class MeasuringDevice extends TCPClient {
 	
 	private long id;
-        private boolean isRequestedToStop;
-
-	public MeasuringDevice(String addr, int port) throws UnknownHostException, IOException {
+    private boolean isRequestedToStop;
+    private int period;
+    
+    /**
+     * @param addr is the host address
+     * @param port is the port on which the hosts accepts connections
+     * @param period is the time in milliseconds between two requests sent by the client
+     * @throws UnknownHostException if the host address cannot be resolved
+     * @throws IOException if the socket cannot be opened
+     */
+	public MeasuringDevice(String addr, int port, int period) throws UnknownHostException, IOException {
 		super(addr, port);
 		
 		id = -1;
-                isRequestedToStop = false;
+        isRequestedToStop = false;
+        this.period = period;
 	}
         
-        public void stop() { isRequestedToStop = true; }
+    public void stop() { isRequestedToStop = true; }
 
 	@Override
 	protected void onConnect(Socket socket) {
@@ -84,7 +93,7 @@ public class MeasuringDevice extends TCPClient {
 	@Override
 	protected void handleResponse(Message<?> reply) {
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(period);
 		} catch (InterruptedException e) {
 			LOGGER.severe(e.getMessage());
 		}

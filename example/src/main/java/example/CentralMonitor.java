@@ -13,6 +13,7 @@ import com.moglan.eac.connection.Config;
 import com.moglan.eac.connection.Message;
 import com.moglan.eac.connection.Protocol;
 import com.moglan.eac.connection.TCPMultiServer;
+
 import java.util.logging.Level;
 
 /**
@@ -27,7 +28,7 @@ public class CentralMonitor extends TCPMultiServer {
         
 	private final Map<Integer, Long> portAllocation; 	// stores what client is connected on what port
         
-	private int numRecvMessages;	// the total number of received messages throughout the server's lifespan
+	private volatile int numRecvMessages;	// the total number of received messages throughout the server's lifespan
 
 	private CentralMonitor() {
 		super(Config.PORT);
@@ -114,7 +115,9 @@ public class CentralMonitor extends TCPMultiServer {
 	}
 
 	@Override
-	protected void onServerShutdown() {
+	protected synchronized void onServerShutdown() {
+		numRecvMessages = 0;
+		
 		LOGGER.info("Server is shutting down...");
 	}
 
@@ -127,7 +130,8 @@ public class CentralMonitor extends TCPMultiServer {
 		 */
 		
 		numRecvMessages++;
-		MessageCount.get().increment();
+		
+		Controller.get().modelChanged();
 		
 		LOGGER.info("Received \"" + request.getData() + "\" from client " 
                         + request.getSenderID() + " on port " + port + ".");
