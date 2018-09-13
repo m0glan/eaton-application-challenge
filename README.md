@@ -18,4 +18,4 @@ Get version 2.0.0 [<img src="https://png.icons8.com/material-outlined/12/000000/
 
 ## Building the project from source
 
-Check the wiki for information on how to build the project from source.
+Check the [wiki](https://github.com/vmoglan/eaton-application-challenge/wiki/Building-the-project-from-source) for information on how to build the project from source.
