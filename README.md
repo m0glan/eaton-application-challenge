@@ -1,4 +1,4 @@
-<img src="https://img.shields.io/badge/release-2.0.0-brightgreen.svg">
+![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg) ![Release](https://img.shields.io/badge/release-2.0.0-brightgreen.svg)
 
 # Eaton Application Challange
 
