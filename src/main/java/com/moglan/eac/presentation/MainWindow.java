@@ -24,7 +24,6 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.GridLayout;
-import javax.swing.BoxLayout;
 
 public class MainWindow extends JFrame implements Observer {
 

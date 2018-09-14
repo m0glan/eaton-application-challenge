@@ -15,8 +15,9 @@ import com.moglan.eac.model.connection.MeasuringDevice;
 import com.moglan.eac.model.connection.TCPClient;
 
 /**
- * Singleton that allows simulating an exchange between a number of clients and
- * a server.
+ * Singleton that allows monitoring the exchange between a number of clients and
+ * a server. It acts as a controller for the application, notifying the view whenever
+ * the model changes.
  * 
  * @author Vlad-Adrian Moglan
  */

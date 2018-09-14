@@ -59,7 +59,7 @@ public class Monitor extends TCPMultiServer {
 		 * special request.
 		 */
 		
-		LOGGER.log(Level.INFO, "New connection on port {0}.", socket.getPort());
+		LOGGER.log(Level.INFO, "New connection on port " + socket.getPort() + ".");
 		
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
