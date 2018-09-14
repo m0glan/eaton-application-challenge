@@ -99,9 +99,9 @@ public class MeasuringDevice extends TCPClient {
 		}
 	}
         
-        @Override
-        public String toString() {
-            return Long.toString(id);
-        }
+    @Override
+    public String toString() {
+        return Long.toString(id);
+    }
 
 }

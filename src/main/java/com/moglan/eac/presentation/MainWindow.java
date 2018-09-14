@@ -25,6 +25,11 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.GridLayout;
 
+/**
+ * Main frame of the application.
+ * 
+ * @author Vlad-Adrian Moglan
+ */
 public class MainWindow extends JFrame implements Observer {
 
 	private static final long serialVersionUID = 1L;
@@ -37,7 +42,7 @@ public class MainWindow extends JFrame implements Observer {
 	private JButton addClientButton;
 	private JButton removeClientButton;
 	private JButton helpButton;
-	private JPanel statusBar;
+	private JPanel simulationStatusBar;
 	private JLabel statusLabel;
 	
 	/**
@@ -63,7 +68,7 @@ public class MainWindow extends JFrame implements Observer {
 	}
 
 	/**
-	 * Create the frame.
+	 * Creates the frame and initializes all of its components.
 	 */
 	public MainWindow() {
 		setResizable(false);
@@ -74,7 +79,7 @@ public class MainWindow extends JFrame implements Observer {
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(mainPanel);
 		
-		JPanel serverStatusPanel = new JPanel();
+		JPanel simulationSwitchPanel = new JPanel();
 		
 		stopSimulationButton = new JButton("Stop");
 		stopSimulationButton.addActionListener(new ActionListener() {
@@ -97,7 +102,7 @@ public class MainWindow extends JFrame implements Observer {
 			}
 		});
 		
-		JPanel activeClientsPanel = new JPanel();
+		JPanel simulationControlPanel = new JPanel();
 		
 		JLabel activeClientsLabel = new JLabel("Active Clients");
 		
@@ -150,87 +155,87 @@ public class MainWindow extends JFrame implements Observer {
 		helpButton = new JButton("Help");
 		helpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Not yet implemented.", "About", JOptionPane.INFORMATION_MESSAGE);
+				new HelpWindow(getX() + 25, getY() + 25);
 			}
 		});
-		GroupLayout gl_activeClientsPanel = new GroupLayout(activeClientsPanel);
-		gl_activeClientsPanel.setHorizontalGroup(
-			gl_activeClientsPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_activeClientsPanel.createSequentialGroup()
+		GroupLayout gl_simulationControlPanel = new GroupLayout(simulationControlPanel);
+		gl_simulationControlPanel.setHorizontalGroup(
+			gl_simulationControlPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_simulationControlPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_activeClientsPanel.createParallelGroup(Alignment.LEADING, false)
-						.addGroup(gl_activeClientsPanel.createSequentialGroup()
+					.addGroup(gl_simulationControlPanel.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_simulationControlPanel.createSequentialGroup()
 							.addComponent(addClientButton, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(removeClientButton))
 						.addComponent(activeClientsLabel)
 						.addComponent(serverStatusProgressBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_activeClientsPanel.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_simulationControlPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(messageCountLabel, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_activeClientsPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_simulationControlPanel.createParallelGroup(Alignment.TRAILING)
 							.addComponent(helpButton)
 							.addComponent(messageCountTextField, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(82, Short.MAX_VALUE))
 		);
-		gl_activeClientsPanel.setVerticalGroup(
-			gl_activeClientsPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_activeClientsPanel.createSequentialGroup()
+		gl_simulationControlPanel.setVerticalGroup(
+			gl_simulationControlPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_simulationControlPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_activeClientsPanel.createParallelGroup(Alignment.BASELINE)
+					.addGroup(gl_simulationControlPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(activeClientsLabel)
 						.addComponent(messageCountLabel))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_activeClientsPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_activeClientsPanel.createSequentialGroup()
+					.addGroup(gl_simulationControlPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_simulationControlPanel.createSequentialGroup()
 							.addComponent(serverStatusProgressBar, GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_activeClientsPanel.createParallelGroup(Alignment.BASELINE)
+							.addGroup(gl_simulationControlPanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(addClientButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(removeClientButton)
 								.addComponent(helpButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)))
 						.addComponent(messageCountTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
-		activeClientsPanel.setLayout(gl_activeClientsPanel);
+		simulationControlPanel.setLayout(gl_simulationControlPanel);
 		
-		statusBar = new JPanel();
+		simulationStatusBar = new JPanel();
 		GroupLayout gl_mainPanel = new GroupLayout(mainPanel);
 		gl_mainPanel.setHorizontalGroup(
 			gl_mainPanel.createParallelGroup(Alignment.TRAILING)
-				.addComponent(activeClientsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
-				.addComponent(serverStatusPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
-				.addComponent(statusBar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
+				.addComponent(simulationControlPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
+				.addComponent(simulationSwitchPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
+				.addComponent(simulationStatusBar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
 		);
 		gl_mainPanel.setVerticalGroup(
 			gl_mainPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_mainPanel.createSequentialGroup()
-					.addComponent(serverStatusPanel, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+					.addComponent(simulationSwitchPanel, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(activeClientsPanel, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+					.addComponent(simulationControlPanel, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
+					.addComponent(simulationStatusBar, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
 		);
 		
 		statusLabel = new JLabel("Simulation is stopped.");
-		GroupLayout gl_statusBar = new GroupLayout(statusBar);
-		gl_statusBar.setHorizontalGroup(
-			gl_statusBar.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_statusBar.createSequentialGroup()
+		GroupLayout gl_simulationStatusBar = new GroupLayout(simulationStatusBar);
+		gl_simulationStatusBar.setHorizontalGroup(
+			gl_simulationStatusBar.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_simulationStatusBar.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(statusLabel)
 					.addContainerGap(490, Short.MAX_VALUE))
 		);
-		gl_statusBar.setVerticalGroup(
-			gl_statusBar.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_statusBar.createSequentialGroup()
+		gl_simulationStatusBar.setVerticalGroup(
+			gl_simulationStatusBar.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_simulationStatusBar.createSequentialGroup()
 					.addComponent(statusLabel)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
-		statusBar.setLayout(gl_statusBar);
-		serverStatusPanel.setLayout(new GridLayout(0, 2, 0, 0));
-		serverStatusPanel.add(startSimulationButton);
-		serverStatusPanel.add(stopSimulationButton);
+		simulationStatusBar.setLayout(gl_simulationStatusBar);
+		simulationSwitchPanel.setLayout(new GridLayout(0, 2, 0, 0));
+		simulationSwitchPanel.add(startSimulationButton);
+		simulationSwitchPanel.add(stopSimulationButton);
 		mainPanel.setLayout(gl_mainPanel);
 		
 		Simulation.get().addObserver(this);
@@ -267,4 +272,5 @@ public class MainWindow extends JFrame implements Observer {
 			statusLabel.setText("Simulation is running on port " + simulation.getServerPort() + "...");
 		}
 	}
+	
 }
