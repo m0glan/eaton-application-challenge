@@ -14,12 +14,12 @@ public class MeasuringDevice extends TCPClient {
 	
 	private long id;
     private boolean isRequestedToStop;
-    private int period;
+    private volatile int period;	// accessed by multiple threads
     
     /**
      * @param addr is the host address
      * @param port is the port on which the hosts accepts connections
-     * @param period is the time in milliseconds between two requests sent by the client
+     * @param period determines how fast the client sends messages
      * @throws UnknownHostException if the host address cannot be resolved
      * @throws IOException if the socket cannot be opened
      */
@@ -31,6 +31,13 @@ public class MeasuringDevice extends TCPClient {
         this.period = period;
 	}
         
+	public void setPeriod(int period) {
+		this.period = period;
+	}
+	
+	/**
+	 * Used for sending the client task a signal to end its execution.
+	 */
     public void stop() { isRequestedToStop = true; }
 
 	@Override

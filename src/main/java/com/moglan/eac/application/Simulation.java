@@ -23,12 +23,14 @@ import com.moglan.eac.model.connection.TCPClient;
  */
 public class Simulation extends Observable {
 	
-	private static final int PERIOD = 1500;	// the time between two requests of any client
-	
 	private static Simulation instance;
 	
+	private static final int BASE_PERIOD = 6000;	// in ms
+	private final int MIN_SENDING_FREQ = 1;
+	private final int MAX_SENDING_FREQ = 4;
+	
 	private ThreadPoolExecutor clientExecutionPool;
-	private List<TCPClient> clientTasks; 
+	private List<MeasuringDevice> clientTasks; 
 	private long messageCount;
 	private boolean isRunning;
 	
@@ -54,6 +56,8 @@ public class Simulation extends Observable {
 		return instance;
 	}
 	
+	public boolean isRunning() { return isRunning; }
+	
 	public int getServerPort() { return Monitor.get().getPort(); }
 	
 	public int getServerActiveCount() { return clientTasks.size(); }
@@ -62,10 +66,20 @@ public class Simulation extends Observable {
 	
 	public long getServerMessageCount() { return messageCount; }
 	
-	public boolean isRunning() { return isRunning; }
-	
 	public void messageCountIncrement() {
 		messageCount++;
+		
+		onChange();
+	}
+	
+	public int getMinimumSendingFrequency() { return MIN_SENDING_FREQ; }
+	
+	public int getMaximumSendingFrequency() { return MAX_SENDING_FREQ; }
+	
+	public void setMessageSendingFrequency(int frequency) {
+		for (MeasuringDevice clientTask : clientTasks) {
+			clientTask.setPeriod(BASE_PERIOD/frequency);
+		}
 		
 		onChange();
 	}
@@ -109,7 +123,7 @@ public class Simulation extends Observable {
 	public void addClientTask() throws UnknownHostException, IOException {
 		if (clientTasks.size() < Monitor.get().getMaxNumberOfConnections()) {
 			MeasuringDevice clientTask = new MeasuringDevice("127.0.0.1", 
-					Config.PORT, PERIOD);
+					Config.PORT, BASE_PERIOD/MAX_SENDING_FREQ);
 			
 			clientTasks.add(clientTask);
 			clientExecutionPool.submit(clientTask);
