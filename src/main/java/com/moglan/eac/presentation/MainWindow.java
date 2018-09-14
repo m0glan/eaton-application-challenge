@@ -46,7 +46,9 @@ public class MainWindow extends JFrame implements Observer {
 	private JLabel statusLabel;
 	
 	/**
-	 * Launch the application.
+	 * Launches the application.
+	 * 
+	 * @param args are the arguments passed to the program from a terminal/console
 	 */
 	public static void main(String[] args) {
 		try {

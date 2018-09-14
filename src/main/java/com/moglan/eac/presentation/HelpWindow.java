@@ -27,7 +27,10 @@ public class HelpWindow extends JFrame {
 	private JPanel contentPane;
 
 	/**
-	 * Create the frame.
+	 * Creates the frame and initializes components.
+	 * 
+	 * @param x is the initial x position
+	 * @param y is the initial y position
 	 */
 	public HelpWindow(int x, int y) {
 		setTitle("Help");
