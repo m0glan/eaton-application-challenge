@@ -2,15 +2,13 @@
 
 # Eaton Application Challenge
 
-## Brief
+## Description
 
-The goal of this project is to implement a simulation in which one monitoring device and multiple measurement devices interact and exchange data; each client has an identification number. The challenge is for the monitoring device to count the number of messages it receives.
+The goal of this project is to implement a simulation in which one monitoring device and multiple measurement devices interact and exchange data; each client has an identification number attributed by the monitor. The challenge is for the monitor to count the number of messages it receives.
 
-## Mechanism
+This project uses standard Java socket programming to establish connections between clients and a server. On the application layer, a _handshake based protocol_ has been put in place to make data-exchange between a client and the server possible and to facilitate smooth connection termination (thus avoiding brutal socket closure).
 
-This project uses standard Java socket programming, meaning a client connecting via the `TCP` protocol to a server having a certain address and running on a given port. On the level of the application layer, a handshake based protocol has been put in place to make data-exchange between a client and the server possible and to facilitate smooth connection termination (thus avoiding brutal socket closure). An important thing to note is that clients/measuring devices start out with their identifiers set to `-1`: it is through the initial connection that they ask the server to attribute them a unique ID.
-
-In addition to the previous features, a server model that supports multiple simultaneous connections has been implemented using Java multithreading through thread execution pools and synchronous methods in such a way that there can be no unwanted concurrent access to any critical section.
+The interface gives control over the simulation in what concerns the number of active connections (cannot be bigger than `numberOfThreads + 1`) and the frequency at which the clients send messages to the server. It also displays the real-time message count.
 
 ## Download
 
