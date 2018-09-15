@@ -8,11 +8,11 @@ The goal of this project is to implement a simulation in which one monitoring de
 
 This project uses standard Java socket programming to establish connections between clients and a server. On the application layer, a _handshake based protocol_ has been put in place to make data-exchange between a client and the server possible and to facilitate smooth connection termination (thus avoiding brutal socket closure).
 
-The interface gives control over the simulation in what concerns the number of active connections (cannot be bigger than `numberOfThreads + 1`) and the frequency at which the clients send messages to the server. It also displays the real-time message count.
+The interface gives control over the simulation in what concerns the number of active connections (cannot be bigger than `numberOfThreads + 1`) and the frequency at which the clients send messages to the server. It also displays the real-time message count (which does not change if there are no active connections).
 
 ## Download
 
-Get [version 2.1.0 <img src="https://png.icons8.com/material-outlined/12/000000/downloading-updates.png">](https://www.dropbox.com/sh/s8pwrjyb499h04v/AAAZwGOXr0h93-yHZZ4-I8mva?dl=0). 
+Get [version 2.1.0 <img src="https://png.icons8.com/material-outlined/12/000000/downloading-updates.png">](https://www.dropbox.com/sh/s8pwrjyb499h04v/AAAZwGOXr0h93-yHZZ4-I8mva?dl=0) (requires **Java 8**). 
 
 ## Building the project from source
 
