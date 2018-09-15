@@ -4,7 +4,7 @@
 
 ## Description
 
-The goal of this project is to implement a simulation in which one monitoring device and multiple measurement devices interact and exchange data; each client has an identification number attributed by the monitor. The challenge is for the monitor to count the number of messages it receives.
+The goal of this project is to implement a simulation in which one monitoring device and multiple measurement devices interact and exchange data; each client has an `id` attributed by the monitor. The challenge is for the monitor to count the number of messages it receives.
 
 This project uses standard Java socket programming to establish connections between clients and a server. On the application layer, a _handshake based protocol_ has been put in place to make data-exchange between a client and the server possible and to facilitate smooth connection termination (thus avoiding brutal socket closure).
 
