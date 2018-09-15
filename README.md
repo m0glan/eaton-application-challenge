@@ -1,4 +1,4 @@
-[![Release](https://img.shields.io/badge/tag-v2.1.0-blue.svg)](https://www.dropbox.com/sh/s8pwrjyb499h04v/AAAZwGOXr0h93-yHZZ4-I8mva?dl=0) ![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)
+[![Release](https://img.shields.io/badge/tag-v2.1.0-blue.svg)](https://github.com/vmoglan/eaton-application-challenge/releases) ![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)
 
 # Eaton Application Challenge
 
@@ -12,7 +12,7 @@ The interface gives control over the simulation in what concerns the number of a
 
 ## Download
 
-Get [version 2.1.0 <img src="https://png.icons8.com/material-outlined/12/000000/downloading-updates.png">](https://www.dropbox.com/sh/s8pwrjyb499h04v/AAAZwGOXr0h93-yHZZ4-I8mva?dl=0) (requires **Java 8**). 
+Get [version 2.1.0 <img src="https://png.icons8.com/material-outlined/12/000000/downloading-updates.png">](https://github.com/vmoglan/eaton-application-challenge/releases/download/2.1.0/eac-2.1.0-binary.zip) (requires **Java 8**). 
 
 ## Building from source
 
