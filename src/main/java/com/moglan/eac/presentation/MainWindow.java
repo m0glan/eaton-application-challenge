@@ -121,7 +121,7 @@ public class MainWindow extends JFrame implements Observer {
 		addClientButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Simulation.get().addClientTask();
+					Simulation.get().addClientTask(frequencySlider.getValue());
 					
 					removeClientButton.setEnabled(true);
 					serverStatusProgressBar.setValue(Simulation.get().getServerActiveCount());

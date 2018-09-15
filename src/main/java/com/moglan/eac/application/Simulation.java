@@ -116,13 +116,14 @@ public class Simulation extends Observable {
 	/**
 	 * Runs a client task / connects a measuring device.
 	 * 
+	 * @param sendingFrequency is the frequency at which the clients send messages to the server
 	 * @throws UnknownHostException if host cannot be resolved
 	 * @throws IOException if socket cannot be opened
 	 */
-	public void addClientTask() throws UnknownHostException, IOException {
+	public void addClientTask(int sendingFrequency) throws UnknownHostException, IOException {
 		if (clientTasks.size() < Monitor.get().getMaximumNumberOfConnections()) {
 			MeasuringDevice clientTask = new MeasuringDevice("127.0.0.1", 
-					Config.PORT, BASE_PERIOD/MAX_SENDING_FREQ);
+					Config.PORT, BASE_PERIOD/sendingFrequency);
 			
 			clientTasks.add(clientTask);
 			clientExecutionPool.submit(clientTask);
