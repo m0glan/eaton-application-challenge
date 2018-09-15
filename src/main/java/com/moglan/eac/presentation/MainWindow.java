@@ -47,7 +47,6 @@ public class MainWindow extends JFrame implements Observer {
 	private JLabel statusLabel;
 	private JTextField messageCountTextField;
 	private JSlider frequencySlider;
-	private JButton button;
 	
 	/**
 	 * Program entry point.
@@ -80,7 +79,7 @@ public class MainWindow extends JFrame implements Observer {
 		setResizable(false);
 		setTitle("Message Counting Server Simulation");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 499, 349);
+		setBounds(100, 100, 499, 315);
 		mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(mainPanel);
@@ -181,24 +180,13 @@ public class MainWindow extends JFrame implements Observer {
 		simulationStatusBar = new JPanel();
 		
 		JPanel messageControlPanel = new JPanel();
-		
-		button = new JButton("Help");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new HelpWindow(getX() + 25, getY() + 25);
-			}
-		});
 		GroupLayout gl_mainPanel = new GroupLayout(mainPanel);
 		gl_mainPanel.setHorizontalGroup(
-			gl_mainPanel.createParallelGroup(Alignment.TRAILING)
-				.addComponent(clientsControlPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
-				.addComponent(simulationSwitchPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
-				.addComponent(simulationStatusBar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
-				.addComponent(messageControlPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
-				.addGroup(gl_mainPanel.createSequentialGroup()
-					.addContainerGap(414, Short.MAX_VALUE)
-					.addComponent(button)
-					.addContainerGap())
+			gl_mainPanel.createParallelGroup(Alignment.LEADING)
+				.addComponent(clientsControlPanel, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+				.addComponent(simulationSwitchPanel, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+				.addComponent(messageControlPanel, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+				.addComponent(simulationStatusBar, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
 		);
 		gl_mainPanel.setVerticalGroup(
 			gl_mainPanel.createParallelGroup(Alignment.LEADING)
@@ -208,9 +196,7 @@ public class MainWindow extends JFrame implements Observer {
 					.addComponent(clientsControlPanel, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(messageControlPanel, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-					.addComponent(button)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
 					.addComponent(simulationStatusBar, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
 		);
 		
