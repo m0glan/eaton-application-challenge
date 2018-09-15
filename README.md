@@ -1,4 +1,4 @@
-[![Release](https://img.shields.io/badge/release-2.1.0-brightgreen.svg) ![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://www.dropbox.com/sh/s8pwrjyb499h04v/AAAZwGOXr0h93-yHZZ4-I8mva?dl=0)
+[![Release](https://img.shields.io/badge/release-2.1.0-brightgreen.svg)](https://www.dropbox.com/sh/s8pwrjyb499h04v/AAAZwGOXr0h93-yHZZ4-I8mva?dl=0) ![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)
 
 # Eaton Application Challenge
 
