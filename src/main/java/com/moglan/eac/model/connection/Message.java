@@ -3,11 +3,11 @@ package com.moglan.eac.model.connection;
 import java.io.Serializable;
 
 /**
- * Class symbolizing the unit of exchange between a client and the server
+ * The unit of exchange between a client and the server.
  * 
  * @author Vlad-Adrian Moglan
  *
- * @param <T> is the type of data sent - must be serializable
+ * @param <T> is the type of data sent; must be {@code Serializable}
  */
 public class Message<T extends Serializable> implements Serializable {
 
@@ -18,10 +18,10 @@ public class Message<T extends Serializable> implements Serializable {
 	private T data;
 	
 	/**
-	 * Initializes the sender ID and the protocol of the message.
+	 * Used when the nature of the message is strictly determined by its {@code Protocol}.
 	 * 
-	 * @param senderID is the identification number of the sender
-	 * @param protocol defines the procedure to be followed by the client or the server
+	 * @param senderID the identification number of the sender
+	 * @param protocol defines the procedure to be followed by the client and the server
 	 */
 	public Message(long senderID, Protocol protocol) {
 		this.senderID = senderID;
@@ -30,11 +30,11 @@ public class Message<T extends Serializable> implements Serializable {
 	}
 	
 	/**
-	 * Initializes the sender ID, the protocol and the data to be exchanged.
+	 * Used when the message is meant to carry data.
 	 * 
-	 * @param senderID is the identification number of the sender
-	 * @param protocol defines the procedure to be followed by the client or the server
-	 * @param data is the serializable object or the structure to be exchanged between two nodes
+	 * @param senderID the identification number of the sender
+	 * @param protocol defines the procedure to be followed by the client and the server
+	 * @param data is the {@code Serializable} object or structure to be exchanged between two nodes
 	 */
 	public Message(long senderID, Protocol protocol, T data) {
 		this.senderID = senderID;

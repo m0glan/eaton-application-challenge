@@ -29,7 +29,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
 /**
- * Main frame of the application.
+ * Main frame launched at application startup.
  * 
  * @author Vlad-Adrian Moglan
  */
@@ -50,7 +50,7 @@ public class MainWindow extends JFrame implements Observer {
 	private JButton button;
 	
 	/**
-	 * Launches the application.
+	 * Program entry point.
 	 * 
 	 * @param args are the arguments passed to the program from a terminal/console
 	 */
@@ -74,7 +74,7 @@ public class MainWindow extends JFrame implements Observer {
 	}
 
 	/**
-	 * Creates the frame and initializes all of its components.
+	 * Creates the frame and initializes its components.
 	 */
 	public MainWindow() {
 		setResizable(false);
@@ -290,7 +290,7 @@ public class MainWindow extends JFrame implements Observer {
 	}
 	
 	/**
-	 * Restores the initial state of the different GUI components
+	 * Restores the different GUI components to their initial state.
 	 */
 	private void reset() {
 		startSimulationButton.setEnabled(true);

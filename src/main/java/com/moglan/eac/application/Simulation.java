@@ -9,7 +9,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.moglan.eac.model.connection.Config;
 import com.moglan.eac.model.connection.Monitor;
 import com.moglan.eac.model.connection.MeasuringDevice;
 import com.moglan.eac.model.connection.TCPClient;
@@ -62,7 +61,7 @@ public class Simulation extends Observable {
 	
 	public int getServerActiveCount() { return clientTasks.size(); }
 	
-	public int getServerMaximumNumberOfConnections() { return Monitor.get().getMaxNumberOfConnections(); }
+	public int getServerMaximumNumberOfConnections() { return Monitor.get().getMaximumNumberOfConnections(); }
 	
 	public long getServerMessageCount() { return messageCount; }
 	
@@ -121,7 +120,7 @@ public class Simulation extends Observable {
 	 * @throws IOException if socket cannot be opened
 	 */
 	public void addClientTask() throws UnknownHostException, IOException {
-		if (clientTasks.size() < Monitor.get().getMaxNumberOfConnections()) {
+		if (clientTasks.size() < Monitor.get().getMaximumNumberOfConnections()) {
 			MeasuringDevice clientTask = new MeasuringDevice("127.0.0.1", 
 					Config.PORT, BASE_PERIOD/MAX_SENDING_FREQ);
 			

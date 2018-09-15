@@ -27,7 +27,7 @@ public class HelpWindow extends JFrame {
 	private JPanel contentPane;
 
 	/**
-	 * Creates the frame and initializes components.
+	 * Creates the frame and initializes its components.
 	 * 
 	 * @param x is the initial x position
 	 * @param y is the initial y position
@@ -43,15 +43,18 @@ public class HelpWindow extends JFrame {
 		setContentPane(contentPane);
 		setVisible(true);
 		
-		SimpleAttributeSet sa = new SimpleAttributeSet();
-		StyleConstants.setAlignment(sa, StyleConstants.ALIGN_JUSTIFIED);
+		SimpleAttributeSet simpleAttributes = new SimpleAttributeSet();
+		StyleConstants.setAlignment(simpleAttributes, StyleConstants.ALIGN_JUSTIFIED);
 		
 		JTextPane aboutTextPanel = new JTextPane();
 		aboutTextPanel.setEnabled(false);
 		aboutTextPanel.setEditable(false);
-		aboutTextPanel.getStyledDocument().setParagraphAttributes(0, 0, sa, false);
+		aboutTextPanel.getStyledDocument().setParagraphAttributes(0, 0, simpleAttributes, false);
 		aboutTextPanel.setFont(new Font("Arial", Font.PLAIN, 13));
-		aboutTextPanel.setText("The simulation launches a server that is able to accept a maximum number of connections equal to the number of cores of the PC + 1. Adding or removing clients can be done using the respective buttons. The main function of the server is that it can count the number of messages it receives.");
+		aboutTextPanel.setText("The simulation launches a server that is able to accept a maximum number of connections equal "
+				+ "to the number of cores of the PC + 1. The main function of the server is that it can count the number of me"
+				+ "ssages it receives. Adding or removing clients can be done using the respective buttons. The rate at which "
+				+ "the messages are sent by the clients can be adjusted using the sending frequency slider.");
 		
 		JButton closeButton = new JButton("Close");
 		closeButton.addActionListener(new ActionListener() {

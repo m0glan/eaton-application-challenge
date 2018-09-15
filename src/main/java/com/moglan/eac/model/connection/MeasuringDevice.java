@@ -10,69 +10,56 @@ import com.moglan.eac.model.connection.Message;
 import com.moglan.eac.model.connection.Protocol;
 import com.moglan.eac.model.connection.TCPClient;
 
+/**
+ * Simulates a measuring device that constantly sends data to a server.
+ * 
+ * @author Vlad-Adrian Moglan
+ */
 public class MeasuringDevice extends TCPClient {
 	
 	private long id;
-    private boolean isRequestedToStop;
     private volatile int period;	// accessed by multiple threads
     
     /**
-     * @param addr is the host address
-     * @param port is the port on which the hosts accepts connections
-     * @param period determines how fast the client sends messages
-     * @throws UnknownHostException if the host address cannot be resolved
-     * @throws IOException if the socket cannot be opened
+     * 
+     * @param addr the address of the remote host
+	 * @param port the port on which the remote host runs
+     * @param period determines the frequency at which the client sends messages towards the server
+     * @throws IOException when socket reading and writing errors occur
+     * @throws UnknownHostException if the host cannot be resolved
      */
-	public MeasuringDevice(String addr, int port, int period) throws UnknownHostException, IOException {
+	public MeasuringDevice(String addr, int port, int period) 
+			throws UnknownHostException, IOException {
 		super(addr, port);
 		
 		id = -1;
-        isRequestedToStop = false;
         this.period = period;
 	}
         
 	public void setPeriod(int period) {
 		this.period = period;
 	}
-	
-	/**
-	 * Used for sending the client task a signal to end its execution.
-	 */
-    public void stop() { isRequestedToStop = true; }
 
 	@Override
-	protected void onConnect(Socket socket) {
+	protected void onConnect() {
 		/**
 		 * When a client connects to the server, it does not have a valid id and thus,
 		 * it requests one.
 		 */
 		
 		try {
-			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			ObjectOutputStream oos = new ObjectOutputStream(getSocket().getOutputStream());
+			ObjectInputStream ois = new ObjectInputStream(getSocket().getInputStream());
 			Message<?> idRequest = new Message<>(id, Protocol.ID_ASSIGNMENT);
 			
 			oos.writeObject(idRequest);
 			
 			Object reply = ois.readObject();
-			
-			if (!(reply instanceof Message)) {
-				throw new IllegalArgumentException("Invalid reply type.");
-			}
-			
 			Object data = ((Message<?>) reply).getData();
-			
-			if (!(data instanceof Long)) {
-				throw new IllegalArgumentException("Invalid reply type.");
-			}
 			
 			this.id = (Long) data;
 		} catch (Exception e) {
-			try {
-				socket.close();
-			} catch (IOException e1) {
-				LOGGER.severe(e1.getMessage());
-			}
+			stop();
 			
 			LOGGER.severe(e.getMessage());
 		}
@@ -90,11 +77,7 @@ public class MeasuringDevice extends TCPClient {
 		 * client sends an end connection request using the handshake method.
 		 */
 		
-		if (!isRequestedToStop) {
-			return new Message<String>(this.id, Protocol.DATA_TRANSFER, "Hello.");
-		}
-		
-		return new Message<>(this.id, Protocol.END_CONNECTION);
+		return new Message<String>(this.id, Protocol.DATA_TRANSFER, "Hello.");
 	}
 
 	@Override

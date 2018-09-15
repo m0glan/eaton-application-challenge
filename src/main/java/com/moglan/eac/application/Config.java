@@ -1,4 +1,4 @@
-package com.moglan.eac.model.connection;
+package com.moglan.eac.application;
 
 /**
  * Contains different configuration elements, such as the port used for the application,

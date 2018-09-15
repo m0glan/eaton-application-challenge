@@ -1,7 +1,7 @@
 package com.moglan.eac.model.connection;
 
 /**
- * The different types of messages that can be exchanged between the client and the server
+ * Establishes the different types of messages that can be exchanged between the client and the server.
  * 
  * @author Vlad-Adrian Moglan
  */

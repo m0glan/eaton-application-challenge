@@ -15,6 +15,8 @@ import java.util.concurrent.Future;
 
 import org.junit.jupiter.api.Test;
 
+import com.moglan.eac.application.Config;
+
 public class ArchitectureTest {
 	
 	private static final String LOCALHOST = "127.0.0.1";
@@ -92,41 +94,33 @@ public class ArchitectureTest {
 	 */
 	@Test
 	void serverShutdownTest() {
-		TCPMultiServer server = null;
+		TCPServer server = null;
 		
-		try {
-			server = new DummyServer(Config.PORT);
-			
-			server.start();
-			
-			assertTrue(server.isRunning());
-			
-			server.stop();
-			
-			assertFalse(server.isRunning());
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		} finally {
-			if (server != null && server.isRunning()) {
-				server.stop();
-			}
-		}
+		server = new DummyServer(Config.PORT);
+		
+		server.start();
+		
+		assertTrue(server.isRunning());
+		
+		server.stop();
+		
+		assertFalse(server.isRunning());
 	}
 
 	/**
 	 * Dummy server counting the total number of received messages.
 	 */
-	class DummyServer extends TCPMultiServer {
+	class DummyServer extends TCPServer {
 		
-		private long numRecvMessages;	// total number of received messages
+		private long messageCount;	// total number of received messages
 
-		public DummyServer(int port) throws IOException {
+		public DummyServer(int port) {
 			super(port);
 			
-			numRecvMessages = 0;
+			messageCount = 0;
 		}
 
-		public long getNumRecvMessages() { return this.numRecvMessages; }
+		public long getNumRecvMessages() { return this.messageCount; }
 
 		@Override
 		protected void onClientConnect(Socket socket) {
@@ -137,20 +131,17 @@ public class ArchitectureTest {
 		protected void onClientDisconnect(Socket socket) {
 			return;
 		}
-
-		/**
-		 * Method that is synchronized to prevent simultaneous accent to the 
-		 * {@code numRecvMessages} variable.
-		 */
+		
 		@Override
 		protected synchronized Message<?> handleRequest(Message<?> request, int port) {
-			if ((request != null) && (request.getProtocol() != Protocol.END_CONNECTION)) {
-				numRecvMessages++;
+			if (request.getProtocol() == Protocol.END_CONNECTION) {
+				return null;
 				
-				return new Message<>(0, Protocol.DATA_TRANSFER, new String());
-			}
+			} 
 			
-			return null;
+			messageCount++;
+			
+			return new Message<>(0, Protocol.DATA_TRANSFER, "Response");
 		}
 
 		@Override
@@ -160,7 +151,7 @@ public class ArchitectureTest {
 
 		@Override
 		protected void onServerStart() {
-			LOGGER.info("Server running on port " + getPort() + ".");
+			return;
 		}
 
 	}
@@ -171,47 +162,37 @@ public class ArchitectureTest {
 	class DummyClient extends TCPClient {
 		
 		int id;
-		private int numSentMessages;
+		private int numberOfSentMessages;
 		
 		public DummyClient(int id, String addr, int port) throws UnknownHostException, IOException {
 			super(addr, port);
 			
 			this.id = id;
-			numSentMessages = 0;
+			numberOfSentMessages = 0;
 		}
 
 		@Override
 		protected Message<?> createRequest() {
-			if (numSentMessages < MAX_SENT_PER_DEVICE) {
-				/**
-				 * Sending {@code String} objects to the server until maximum number is attained.
-				 */
+			if (numberOfSentMessages < MAX_SENT_PER_DEVICE) {
+				numberOfSentMessages++;
 				
-				numSentMessages++;
-				
-				return new Message<>(id, Protocol.DATA_TRANSFER, new String());
+				return new Message<>(id, Protocol.DATA_TRANSFER, "Request");
 			}
 			
-			else {
-				/*
-				 * Sending end-connection signal 
-				 */
-				
-				return new Message<>(id, Protocol.END_CONNECTION);
-			}
+			return new Message<>(id, Protocol.END_CONNECTION);
 		}
 
 		@Override
 		protected void handleResponse(Message<?> reply) {
 			try {
-				Thread.sleep(1000);	// introducing a delay of 1 second between exchanges
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				LOGGER.severe(e.getMessage());
 			}
 		}
 
 		@Override
-		protected void onConnect(Socket socket) {
+		protected void onConnect() {
 			return;
 		}
 

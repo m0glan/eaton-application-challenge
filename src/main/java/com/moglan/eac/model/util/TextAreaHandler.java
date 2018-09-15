@@ -6,7 +6,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 /**
- * Handler used for outputting log messages to a TextArea.
+ * Handler used for displaying logger messages on a {@code JTextArea}.
  * 
  * @author Vlad-Adrian Moglan
  */
