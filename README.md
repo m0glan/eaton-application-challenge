@@ -1,6 +1,6 @@
 ![Release](https://img.shields.io/badge/release-2.1.0-brightgreen.svg) ![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)
 
-# Eaton Application Challange
+# Eaton Application Challenge
 
 ## Brief
 
