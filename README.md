@@ -14,6 +14,6 @@ The interface gives control over the simulation in what concerns the number of a
 
 Get [version 2.1.0 <img src="https://png.icons8.com/material-outlined/12/000000/downloading-updates.png">](https://www.dropbox.com/sh/s8pwrjyb499h04v/AAAZwGOXr0h93-yHZZ4-I8mva?dl=0) (requires **Java 8**). 
 
-## Building the project from source
+## Building from source
 
 Check the [wiki](https://github.com/vmoglan/eaton-application-challenge/wiki/Building-the-project-from-source) for information on how to build the project from source.
