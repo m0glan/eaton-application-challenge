@@ -20,9 +20,6 @@ public abstract class TCPServer {
 	private boolean isRunning;
 	private int maximumNumberOfConnections;
 	
-	/**
-	 * @param port is the port on which the server listens for new connections
-	 */
 	public TCPServer(int port) {
 		this.port = port;
 		this.maximumNumberOfConnections = ManagementFactory.getThreadMXBean()
@@ -51,8 +48,6 @@ public abstract class TCPServer {
 	public final int getMaximumNumberOfConnections() { return maximumNumberOfConnections; }
 	
 	public final long getNumberOfActiveConnections() { return serverTask.getNumberOfActiveConnections(); }
-	
-	public final Logger getLogger() { return LOGGER; }
 	
 	public final void start()  {
 		if (!isRunning()) {
@@ -99,7 +94,7 @@ public abstract class TCPServer {
 	protected abstract void onServerShutdown();
 	
 	/**
-	 * @param request message received from the client
+	 * @param request the message received from the client
 	 * @param port the port from which the request comes
 	 * @return a response for the client
 	 */

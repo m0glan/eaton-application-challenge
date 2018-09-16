@@ -7,12 +7,9 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import com.moglan.eac.application.Config;
 import com.moglan.eac.application.Simulation;
-
-import java.util.logging.Level;
 
 /**
  * Monitors multiple clients and counts the total number of messages received.
