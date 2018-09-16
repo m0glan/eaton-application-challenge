@@ -25,7 +25,7 @@ public class Monitor extends TCPServer {
 	private volatile int messageCount;	// the total number of received messages throughout the server's up time
 
 	private Monitor() {
-		super(Config.PORT);
+		super(Config.SERVER_PORT);
 		
 		messageCount = 0;
 		portAllocation = new HashMap<>();

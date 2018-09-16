@@ -40,7 +40,7 @@ public class ArchitectureTest {
 			 * Starting dummy server 
 			 */
 			
-			server = new DummyServer(Config.PORT);
+			server = new DummyServer(Config.SERVER_PORT);
 			
 			server.start();
 			
@@ -49,7 +49,7 @@ public class ArchitectureTest {
 			 */
 			
 			for (int i = 0; i < MAX_CLIENTS; i++) {
-				Runnable runnable = new DummyClient(i, LOCALHOST, Config.PORT);
+				Runnable runnable = new DummyClient(i, LOCALHOST, Config.SERVER_PORT);
 				Future<?> future = executionPool.submit(runnable);
 				
 				futures.add(future);
@@ -96,7 +96,7 @@ public class ArchitectureTest {
 	void serverShutdownTest() {
 		TCPServer server = null;
 		
-		server = new DummyServer(Config.PORT);
+		server = new DummyServer(Config.SERVER_PORT);
 		
 		server.start();
 		

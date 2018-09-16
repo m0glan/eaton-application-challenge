@@ -121,7 +121,7 @@ public class Simulation extends Observable {
 	public void addClientTask(int sendingFrequency) throws UnknownHostException, IOException {
 		if (clientTasks.size() < Monitor.get().getMaximumNumberOfConnections()) {
 			MeasuringDevice clientTask = new MeasuringDevice("127.0.0.1", 
-					Config.PORT, BASE_PERIOD/sendingFrequency);
+					Config.SERVER_PORT, BASE_PERIOD/sendingFrequency);
 			
 			clientTasks.add(clientTask);
 			clientExecutionPool.submit(clientTask);

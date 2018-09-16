@@ -3,6 +3,8 @@ package com.moglan.eac.presentation;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import com.moglan.eac.application.Config;
 import com.moglan.eac.application.Simulation;
 
 import javax.swing.GroupLayout;
@@ -36,7 +39,6 @@ import javax.swing.event.ChangeEvent;
 public class MainWindow extends JFrame implements Observer {
 
 	private static final long serialVersionUID = 1L;
-	
 	private JPanel mainPanel;
 	private JProgressBar serverStatusProgressBar;
 	private JButton startSimulationButton;
@@ -61,8 +63,15 @@ public class MainWindow extends JFrame implements Observer {
 	    }
 		
 		EventQueue.invokeLater(new Runnable() {
+			@SuppressWarnings("resource")
 			public void run() {
 				try {
+					/**
+					 * The {@code ServerSocket} instance creation is used for ensuring that only one 
+					 * instance of the app is running at a time.
+					 */
+					
+					new ServerSocket(Config.APP_PORT, 0, InetAddress.getByAddress(new byte[] {127,0,0,1}));
 					MainWindow frame = new MainWindow();
 					frame.setVisible(true);
 				} catch (Exception e) {
