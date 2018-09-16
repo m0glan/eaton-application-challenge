@@ -18,7 +18,7 @@ public class TextAreaHandler extends StreamHandler {
        this.textArea = textArea;
     }
     
-    public JTextArea getTextArea() { return textArea; }
+    public JTextArea getTextArea() { return this.textArea; }
     
     @Override
     public void publish(LogRecord record) {
@@ -26,7 +26,7 @@ public class TextAreaHandler extends StreamHandler {
         flush();
         
         SwingUtilities.invokeLater(() -> {
-            textArea.append(getFormatter().format(record));
+            this.textArea.append(getFormatter().format(record));
         });
     }
     

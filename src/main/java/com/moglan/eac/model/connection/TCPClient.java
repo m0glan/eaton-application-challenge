@@ -21,13 +21,10 @@ public abstract class TCPClient implements Runnable {
 	private boolean isRunning;
 	
 	public TCPClient(String addr, int port) throws UnknownHostException, IOException {
-		socket = new Socket(addr, port);
-		isRunning = false;
+		this.socket = new Socket(addr, port);
+		this.isRunning = false;
 	}
 	
-	/**
-	 * @return true if client is running
-	 */
 	public boolean isRunning() {
 		return isRunning;
 	}
@@ -36,9 +33,6 @@ public abstract class TCPClient implements Runnable {
 		return socket;
 	}
 	
-	/**
-	 * Provides the connection loop.
-	 */
 	@Override
 	public final void run() {
 		isRunning = true;
@@ -71,9 +65,6 @@ public abstract class TCPClient implements Runnable {
 		}
 	}
 	
-	/**
-	 * Requests client to exit the connection loop; this ends the connection abruptly.
-	 */
 	public void stop() {
 		isRunning = false;
 		
@@ -84,28 +75,12 @@ public abstract class TCPClient implements Runnable {
 		}
 	}
 	
-	/**
-	 * Determines behavior upon connection.
-	 * 
-	 * @param socket used for communicating with the server.
-	 */
 	protected abstract void onConnect();
 	
-	/**
-	 * Determines behavior upon end of connection.
-	 */
 	protected abstract void onDisconnect();
 	
-	/**
-	 * @return a server request; {@see com.moglan.eac.model.connection.Protocol}
-	 */
 	protected abstract Message<?> createRequest();
 	
-	/**
-	 * Handles the response received from the server.
-	 * 
-	 * @param response the message received from the server
-	 */
 	protected abstract void handleResponse(Message<?> response);
 	
 }

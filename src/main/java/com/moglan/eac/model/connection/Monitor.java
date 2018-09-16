@@ -42,8 +42,6 @@ public class Monitor extends TCPServer {
 		return instance;
 	}
 	
-	public Logger getLogger() { return LOGGER; }
-	
 	public int getMessageCount() { return messageCount; }
 
 	@Override

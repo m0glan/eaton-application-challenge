@@ -34,7 +34,7 @@ public class Simulation extends Observable {
 	private boolean isRunning;
 	
 	private Simulation() {
-		clientExecutionPool = new ThreadPoolExecutor(
+		this.clientExecutionPool = new ThreadPoolExecutor(
 			getServerMaximumNumberOfConnections(),
 			getServerMaximumNumberOfConnections(),
 			0L, 
@@ -42,9 +42,9 @@ public class Simulation extends Observable {
 			new LinkedBlockingQueue<>()
 		);
 		
-		clientTasks = new ArrayList<>();
-		messageCount = 0;
-		isRunning = false;
+		this.clientTasks = new ArrayList<>();
+		this.messageCount = 0;
+		this.isRunning = false;
 	}
 	
 	public static Simulation get() {
@@ -114,8 +114,6 @@ public class Simulation extends Observable {
 	}
 	
 	/**
-	 * Runs a client task / connects a measuring device.
-	 * 
 	 * @param sendingFrequency is the frequency at which the clients send messages to the server
 	 * @throws UnknownHostException if host cannot be resolved
 	 * @throws IOException if socket cannot be opened
@@ -131,9 +129,6 @@ public class Simulation extends Observable {
 		}
 	}
 	
-	/**
-	 * Removes the last client from the task execution list.
-	 */
 	public void removeClientTask() {
 		if (clientTasks.size() > 0) {
 			TCPClient clientTask = clientTasks.get(clientTasks.size() - 1);
@@ -147,7 +142,7 @@ public class Simulation extends Observable {
 	
 	/**
 	 * Sets the {@code hasChanged} variable of the {@code Observable} class to true and
-	 * notifies observers;
+	 * notifies observers.
 	 */
 	private void onChange() {
 		setChanged();

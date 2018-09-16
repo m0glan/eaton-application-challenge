@@ -3,7 +3,6 @@ package com.moglan.eac.model.connection;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.net.UnknownHostException;
 
 import com.moglan.eac.model.connection.Message;
@@ -20,19 +19,11 @@ public class MeasuringDevice extends TCPClient {
 	private long id;
     private volatile int period;	// accessed by multiple threads
     
-    /**
-     * 
-     * @param addr the address of the remote host
-	 * @param port the port on which the remote host runs
-     * @param period determines the frequency at which the client sends messages towards the server
-     * @throws IOException when socket reading and writing errors occur
-     * @throws UnknownHostException if the host cannot be resolved
-     */
 	public MeasuringDevice(String addr, int port, int period) 
 			throws UnknownHostException, IOException {
 		super(addr, port);
 		
-		id = -1;
+		this.id = -1;
         this.period = period;
 	}
         
